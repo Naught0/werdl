@@ -1,7 +1,7 @@
 import { SplitInput } from "./SplitInput";
 import { useState } from "react";
 import "lodash.permutations";
-import { permutations, chunk, zip } from "lodash";
+import { permutations, chunk, zip, uniqBy } from "lodash";
 
 
 export const App = () => {
@@ -12,7 +12,7 @@ export const App = () => {
     if (data.some(e => e.known)) {
       perms = perms.filter(perm => zip(perm, data).every(combo => !(combo[0] !== combo[1].letter && combo[1].known)));
     }
-    setResp(perms);
+    setResp(uniqBy(perms, e => e.join('')));
     // (async () => {
     //   const opts = (await axios.post('/dothething', data)).data;
     //   setResp(opts);
