@@ -1,4 +1,4 @@
-import { SplitInput } from "./SplitInput";
+import { SplitInput, STATE } from "./SplitInput";
 import { useState } from "react";
 import "lodash.permutations";
 import { permutations, chunk, zip, uniqBy } from "lodash";
@@ -9,14 +9,12 @@ export const App = () => {
 
   const onComplete = (data) => {
     let perms = permutations(data.map(e => e.letter), data.length);
-    if (data.some(e => e.known)) {
-      perms = perms.filter(perm => zip(perm, data).every(combo => !(combo[0] !== combo[1].letter && combo[1].known)));
-    }
+    // Filter for only correct inputs
+    perms = perms.filter(perm => zip(perm, data).every(combo => !(combo[0] !== combo[1].letter && combo[1].state === STATE.CORRECT)));
+
+    // Filter out incorrect inputs
+    perms = perms.filter(perm => zip(perm, data).every(combo => !(combo[0] === combo[1].letter && combo[1].state === STATE.INCORRECT)));
     setResp(uniqBy(perms, e => e.join('')));
-    // (async () => {
-    //   const opts = (await axios.post('/dothething', data)).data;
-    //   setResp(opts);
-    // })();
   }
 
   return (
@@ -27,7 +25,7 @@ export const App = () => {
         <section className="container mt-6">
           <div className="columns is-multiline is-flex is-justify-content-flex-start">
             {chunk(resp, 10).map((c, idx) => {
-              return <div className="column is-flex is-flex-grow-0" style={{ minWidth: '7rem' }}>
+              return <div key={`result-col-${idx}`} className="column is-flex is-flex-grow-0" style={{ minWidth: '7rem' }}>
                 <div className="content is-size-5">
                   {c.map((e, idx) => {
                     return <p key={`option-${idx}`}>{e.map(letter => letter.toUpperCase().replace(' ', '_')).join(' ')}</p>

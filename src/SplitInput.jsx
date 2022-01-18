@@ -1,22 +1,31 @@
 import { useEffect, useState, useRef, forwardRef } from "react";
 import { useImmer } from "use-immer";
 
+export const STATE = {
+  CORRECT: 1,
+  UNKNOWN: 0,
+  INCORRECT: 2
+}
+
 const InputCombo = forwardRef(({ index, onValueChange, onKnownChange }, ref) => {
-  const [isKnown, setKnown] = useState(false);
+  const [letterState, setLetterState] = useState(STATE.UNKNOWN);
   const [val, setVal] = useState('');
+  const toggleState = () => {
+    setLetterState(letterState + 1 > 2 ? 0 : letterState + 1);
+  }
 
   useEffect(() => {
     onValueChange(val, index);
     if (!val || val === " ") {
-      setKnown(false);
+      setLetterState(STATE.UNKNOWN);
     }
     // eslint-disable-next-line
   }, [val]);
 
   useEffect(() => {
-    onKnownChange(isKnown, index);
+    onKnownChange(letterState, index);
     // eslint-disable-next-line
-  }, [isKnown]);
+  }, [letterState]);
 
   return (
     <div className="field is-flex is-flex-direction-column mr-3" style={{ width: '64px' }}>
@@ -24,14 +33,14 @@ const InputCombo = forwardRef(({ index, onValueChange, onKnownChange }, ref) => 
         <input className="input is-large" type="text" maxLength={1} onChange={({ target }) => setVal(target.value)} ref={ref} style={{ textTransform: 'uppercase', minHeight: '64px', textAlign: "center" }} />
       </div>
       <div className="field">
-        <button className={`button is-fullwidth ${isKnown && 'is-success'}`} onClick={() => setKnown(!isKnown)} disabled={!val}>{isKnown ? '✅' : '❌'}</button>
+        <button className={`button has-text-weight-bold is-fullwidth ${letterState === STATE.CORRECT && 'is-success'} ${letterState === STATE.INCORRECT && 'is-warning'}`} onClick={toggleState} disabled={!val}>{letterState === STATE.CORRECT ? '✅' : letterState === STATE.INCORRECT ? '❌' : '?'}</button>
       </div>
     </div>
   )
 });
 
 export const SplitInput = ({ length, onComplete }) => {
-  const [letters, setLetters] = useImmer([...new Array(length)].map(() => { return { letter: '', known: false } }));
+  const [letters, setLetters] = useImmer([...new Array(length)].map(() => { return { letter: '', state: STATE.UNKNOWN } }));
   const inputRefs = useRef([]);
   const [focusedIdx, setFocusedIdx] = useState(0);
 
@@ -43,9 +52,9 @@ export const SplitInput = ({ length, onComplete }) => {
     });
   }
 
-  const onKnownChange = (isKnown, idx) => {
+  const onKnownChange = (letterState, idx) => {
     setLetters(draft => {
-      draft[idx].known = isKnown;
+      draft[idx].state = letterState;
     })
   }
 
