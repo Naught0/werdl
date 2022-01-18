@@ -1,5 +1,4 @@
 import { SplitInput } from "./SplitInput";
-import axios from 'axios';
 import { useState } from "react";
 import "lodash.permutations";
 import { permutations, chunk, zip } from "lodash";
