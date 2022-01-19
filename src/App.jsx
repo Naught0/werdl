@@ -30,7 +30,7 @@ export const App = () => {
         <section className="container mt-6">
           <div className="columns is-multiline is-flex is-justify-content-flex-start">
             {chunk(resp, 10).map((c, idx) => {
-              return <div key={`result-col-${idx}`} className="column is-flex is-flex-grow-0" style={{ minWidth: '7rem' }}>
+              return <div key={`result-col-${idx}`} className="column is-flex is-flex-grow-0" style={{ minWidth: '9rem' }}>
                 <div className="content is-size-5">
                   {c.map((e, idx) => {
                     return <p key={`option-${idx}`}>{e.map(letter => letter.toUpperCase().replace(' ', '_')).join(' ')}</p>
