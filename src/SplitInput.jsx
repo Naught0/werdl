@@ -37,7 +37,7 @@ const InputCombo = forwardRef(({ index, onValueChange, onKnownChange, letterStat
   return (
     <div className="field is-flex is-flex-direction-column mr-3" style={{ width: '64px' }}>
       <div className="field">
-        <input tabIndex={index + 1} className="input is-large" type="text" maxLength={1} onKeyDown={keyDown} onFocus={() => setFocus(index)} onChange={({ target }) => setVal(target.value)} ref={ref} style={{ textTransform: 'uppercase', minHeight: '64px', textAlign: "center" }} />
+        <input tabIndex={index + 1} className="input is-large werdl-input" type="text" maxLength={1} onKeyDown={keyDown} onFocus={() => setFocus(index)} onChange={({ target }) => setVal(target.value)} ref={ref} style={{ textTransform: 'uppercase', minHeight: '64px', textAlign: "center" }} />
       </div>
       <div className="field">
         <button className={`button has-text-weight-bold is-fullwidth ${letterState === STATE.CORRECT && 'is-success'} ${letterState === STATE.INCORRECT && 'is-warning'}`} onClick={toggleState} disabled={!val}>
