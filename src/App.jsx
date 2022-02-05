@@ -43,7 +43,7 @@ export const App = () => {
       </nav>
       <section className="hero is-fullheight-with-navbar is-black">
         <div className="hero-body is-flex is-flex-direction-column">
-          <SplitInput length={5} onComplete={d => onComplete(d)} onCleared={() => setResp([])} />
+          <SplitInput length={5} onComplete={d => onComplete(d)} />
           <section className="container mt-6">
             <div className="columns is-multiline is-flex is-justify-content-flex-start">
               {chunk(resp, 10).map((c, idx) => {

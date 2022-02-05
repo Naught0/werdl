@@ -48,7 +48,7 @@ const InputCombo = forwardRef(({ index, onValueChange, onKnownChange, letterStat
   )
 });
 
-export const SplitInput = ({ length, onComplete, onCleared }) => {
+export const SplitInput = ({ length, onComplete }) => {
   const [letters, setLetters] = useImmer([...new Array(length)].map(() => { return { letter: ' ', state: STATE.UNKNOWN } }));
   const inputRefs = useRef([]);
   const [focusedIdx, setFocusedIdx] = useState(0);
@@ -85,16 +85,7 @@ export const SplitInput = ({ length, onComplete, onCleared }) => {
   }, [focusedIdx])
 
   const onClear = () => {
-    inputRefs.current[0].focus();
-    inputRefs.current.forEach(ref => {
-      ref.value = "";
-    });
-    setLetters(draft => {
-      for (let i = 0; i < draft.length; i++) {
-        draft[i].state = STATE.UNKNOWN;
-      }
-    });
-    onCleared();
+    window.location.reload();
   }
 
   return (
