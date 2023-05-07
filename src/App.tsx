@@ -51,7 +51,7 @@ const App = () => {
     // This is useful in avoiding trying to set the maxlen=1 input to something like "RightArrow",
     // or otherwise intercepting the keystroke, as in the case of spacebar
     if (e.key === "Backspace") {
-      if (letterIdx === 0) removeRow(rowIdx);
+      if (letterIdx === 0 && rowIdx !== 0) removeRow(rowIdx);
       e.preventDefault();
 
       if (!letterRefs.current[rowIdx][letterIdx - 1]) return false;
