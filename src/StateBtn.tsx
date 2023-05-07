@@ -20,7 +20,11 @@ export const StateBtn: FC<StateBtnProps> = ({ state, onClick }) => {
     [state]
   );
   return (
-    <button className={`w-100 bg-stone-700`} tabIndex={-1} onClick={onClick}>
+    <button
+      className="w-100 bg-stone-700 select-none"
+      tabIndex={-1}
+      onClick={onClick}
+    >
       {text}
     </button>
   );

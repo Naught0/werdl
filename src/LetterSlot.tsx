@@ -41,7 +41,7 @@ export const LetterSlot = forwardRef<HTMLDivElement, LetterSlotProps>(
     return (
       <div className="flex flex-col gap-2">
         <div
-          className={`flex items-center justify-center text-zinc-300 font-extrabold rounded-none aspect-square w-16 h-16 outline-0 text-3xl caret-transparent ${bgColor} focus:border-solid focus:border-2 focus:border-white focus:shadow-zinc-500 focus:shadow-inner`}
+          className={`flex items-center justify-center text-stone-300 font-extrabold rounded-none aspect-square w-16 h-16 outline-0 text-3xl caret-transparent ${bgColor} focus:border-solid focus:border-2 focus:border-white focus:shadow-stone-500 focus:shadow-inner`}
           onKeyDown={(e) => onKeyDown(e)}
           onInput={(e) => {
             setLetter({

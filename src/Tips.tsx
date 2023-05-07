@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 const Key = ({ children }: { children: ReactNode }) => {
   return (
-    <code className="bg-zinc-700 text-rose-200 py-0.5 px-1 font-mono">
+    <code className="bg-stone-700 text-rose-200 py-0.5 px-1 font-mono">
       {children}
     </code>
   );

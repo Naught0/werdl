@@ -172,32 +172,35 @@ const App = () => {
                 />
               ))}
               <div className="flex flex-col gap-2">
-                <button
-                  className="cursor-pointer text-zinc-300 w-8 h-8 bg-zinc-700"
-                  onClick={() => addRow()}
-                >
-                  +
-                </button>
                 {rowIndex !== 0 && (
                   <button
-                    className="cursor-pointer text-zinc-300 w-8 h-8 bg-zinc-700"
+                    className="cursor-pointer text-stone-300 w-8 h-8 bg-stone-700 select-none"
                     onClick={() => removeRow(rowIndex)}
                   >
                     -
                   </button>
                 )}
+                {rowIndex === rows.length - 1 && rowIndex < 5 && (
+                  <button
+                    className="cursor-pointer text-stone-300 w-8 h-8 bg-stone-700 select-none"
+                    onClick={() => addRow()}
+                  >
+                    +
+                  </button>
+                )}
+                <div className="w-8 h-0" />
               </div>
             </div>
           ))}
           <div className="flex items-center justify-center gap-2">
             <button
-              className="bg-green-700 px-4 py-2 text-zinc-300 text-lg"
+              className="bg-green-700 px-4 py-2 text-stone-300 text-lg"
               onClick={onComplete}
             >
               ✨ visualize success
             </button>
             <button
-              className="min-w-28 bg-red-700 px-4 py-2 text-zinc-300 text-lg"
+              className="min-w-28 bg-red-700 px-4 py-2 text-stone-300 text-lg"
               onClick={clear}
             >
               💣 clear
@@ -214,7 +217,7 @@ const App = () => {
             chunk(resp, 5).map((chunk) => (
               <div className="flex flex-col gap-5">
                 {chunk.map((possibility) => (
-                  <p className="text-zinc-300 text-2xl tracking-widest">
+                  <p className="text-stone-300 text-2xl tracking-widest">
                     {possibility.split("").join(" ")}
                   </p>
                 ))}
