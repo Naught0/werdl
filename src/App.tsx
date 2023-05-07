@@ -38,11 +38,9 @@ const App = () => {
     letterRefs.current[rowIndex][letterIndex + 1]?.focus();
   }
   function removeRow(rowIdx: number) {
-    if (rowIdx !== 0) {
-      setRows((draft) => {
-        draft.splice(rowIdx, 1);
-      });
-    }
+    setRows((draft) => {
+      draft.splice(rowIdx, 1);
+    });
   }
   function onKeyPress(
     e: KeyboardEvent<HTMLDivElement>,
@@ -154,25 +152,28 @@ const App = () => {
   return (
     <div className="flex flex-col">
       <div className="bg-dark min-h-screen h-max overflow-clip pt-12">
-        <div className="flex items-center justify-center flex-col gap-4">
+        <div className="flex items-center justify-center flex-col gap-2">
           {[...Array(rows.length).keys()].map((rowIndex) => (
             <div
-              className="flex items-center justify-center flex-row flex-wrap gap-2"
+              className="flex flex-wrap gap-2 items-center justify-center"
               key={`row${rowIndex}`}
             >
-              {[...Array(5).keys()].map((letterIndex) => (
-                <LetterSlot
-                  onKeyPress={(e) => onKeyPress(e, rowIndex, letterIndex)}
-                  setLetter={(l) => setLetter(rowIndex, letterIndex, l)}
-                  letter={rows[rowIndex][letterIndex]}
-                  key={`letter${rowIndex}${letterIndex}`}
-                  ref={(r) => {
-                    letterRefs.current[rowIndex][letterIndex] = r!;
-                  }}
-                />
-              ))}
-              <div className="flex flex-col gap-2">
-                {rowIndex !== 0 && (
+              <div className="flex items-center justify-center flex-row gap-2">
+                {[...Array(5).keys()].map((letterIndex) => (
+                  <LetterSlot
+                    onKeyPress={(e) => onKeyPress(e, rowIndex, letterIndex)}
+                    setLetter={(l) => setLetter(rowIndex, letterIndex, l)}
+                    letter={rows[rowIndex][letterIndex]}
+                    key={`letter${rowIndex}${letterIndex}`}
+                    ref={(r) => {
+                      letterRefs.current[rowIndex][letterIndex] = r!;
+                    }}
+                  />
+                ))}
+              </div>
+
+              <div className="flex flex-row sm:flex-col gap-2 justify-center items-center w-full sm:w-fit">
+                {(rowIndex !== 0 || rows.length > 1) && (
                   <button
                     className="cursor-pointer text-stone-300 w-8 h-8 bg-stone-700 select-none"
                     onClick={() => removeRow(rowIndex)}
@@ -188,11 +189,11 @@ const App = () => {
                     +
                   </button>
                 )}
-                <div className="w-8 h-0" />
+                <div className="w-8 h-0 hidden sm:flex" />
               </div>
             </div>
           ))}
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-2 mt-2">
             <button
               className="bg-green-700 px-4 py-2 text-stone-300 text-lg"
               onClick={onComplete}
