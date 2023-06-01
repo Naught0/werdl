@@ -14,6 +14,8 @@ import { chunk } from "lodash";
 import { getValidPermutations } from "./getValidPermutations";
 import { Footer } from "./Footer";
 
+const MAX_ROWS = 5;
+
 const INITIAL_ROW_STATE = [
   [...Array(5).keys()].map(() => ({
     state: LetterState.IN_WORD,
@@ -119,7 +121,7 @@ const App = () => {
   }
 
   function addRow() {
-    if (rows.length === 6) return;
+    if (rows.length === MAX_ROWS) return;
 
     setRows((draft) => {
       draft.push(
@@ -181,7 +183,7 @@ const App = () => {
                     -
                   </button>
                 )}
-                {rowIndex === rows.length - 1 && rowIndex < 5 && (
+                {rowIndex === rows.length - 1 && rowIndex < MAX_ROWS - 1 && (
                   <button
                     className="cursor-pointer text-stone-300 w-8 h-8 bg-stone-700 select-none"
                     onClick={() => addRow()}
