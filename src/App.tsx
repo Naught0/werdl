@@ -13,6 +13,8 @@ import { toggleLetterState } from "./toggleLetterState";
 import { chunk } from "lodash";
 import { getValidPermutations } from "./getValidPermutations";
 import { Footer } from "./Footer";
+import { getPossibleWords } from "./worker/util";
+import { Collapsible } from "./Collapsible";
 
 const MAX_ROWS = 5;
 
@@ -22,14 +24,23 @@ const INITIAL_ROW_STATE = [
     letter: "",
   })),
 ];
+const smartColumnsClassName = "columns-2 sm:columns-3 md:columns-4";
 
 const App = () => {
   const [resp, setResp] = useState<string[]>([]);
+  const [possibleWords, setPossibleWords] = useState<Set<string>>(new Set());
   const [rows, setRows] = useImmer<Letter[][]>(INITIAL_ROW_STATE);
   const letterRefs = useRef<HTMLDivElement[][]>([[], [], [], [], [], []]);
 
   const onComplete = () => {
-    setResp(getValidPermutations(rows).sort());
+    const permutations = getValidPermutations(rows).sort();
+    setResp(permutations);
+    if (permutations.length > 0) {
+      const words = permutations.flatMap((p) => getPossibleWords(p, 5));
+      words.sort((a, b) => a.localeCompare(b));
+
+      setPossibleWords(new Set(words));
+    }
   };
 
   function setLetter(rowIndex: number, letterIndex: number, l: Letter) {
@@ -47,7 +58,7 @@ const App = () => {
   function onKeyPress(
     e: KeyboardEvent<HTMLDivElement>,
     rowIdx: number,
-    letterIdx: number
+    letterIdx: number,
   ) {
     // Return true if we should skip attempting to replace the current character with the pressed key
     // This is useful in avoiding trying to set the maxlen=1 input to something like "RightArrow",
@@ -111,7 +122,7 @@ const App = () => {
       e.preventDefault();
       setRows((draft) => {
         draft[rowIdx][letterIdx].state = toggleLetterState(
-          draft[rowIdx][letterIdx].state
+          draft[rowIdx][letterIdx].state,
         );
       });
       return true;
@@ -128,7 +139,7 @@ const App = () => {
         [...Array(5).keys()].map(() => ({
           state: LetterState.IN_WORD,
           letter: "",
-        }))
+        })),
       );
     });
   }
@@ -139,6 +150,7 @@ const App = () => {
     });
     letterRefs.current[0][0].focus();
     setResp([]);
+    setPossibleWords(new Set());
   }
 
   useLayoutEffect(function focusFirstLetterSlotOnPageLoad() {
@@ -148,12 +160,12 @@ const App = () => {
     function focusFirstLetterSlot() {
       letterRefs.current[rows.length - 1][0].focus();
     },
-    [rows.length]
+    [rows.length],
   );
 
   return (
-    <div className="flex flex-col">
-      <div className="bg-dark min-h-screen h-max overflow-clip pt-12">
+    <div className="flex flex-col text-stone-200">
+      <div className="bg-dark min-h-screen h-max overflow-clip pt-12 pb-36">
         <div className="flex items-center justify-center flex-col gap-2">
           {[...Array(rows.length).keys()].map((rowIndex) => (
             <div
@@ -210,22 +222,40 @@ const App = () => {
             </button>
           </div>
         </div>
-        <div className="hidden lg:flex justify-center m-2">
+        <div className="hidden sm:flex justify-center m-2">
           <Tips />
         </div>
 
         {resp.length > 0 && <hr className="border-stone-700 my-6" />}
-        <div className="flex gap-4 flex-wrap justify-evenly px-6 pb-6">
-          {resp &&
-            chunk(resp, 5).map((chunk) => (
-              <div className="flex flex-col gap-5">
-                {chunk.map((possibility) => (
-                  <p className="text-stone-300 text-2xl tracking-widest">
+        <div className="flex flex-col gap-5 sm:max-w-screen-sm m-auto">
+          <div
+            className={`flex flex-row gap-3 justify-center flex-wrap m-auto px-6`}
+          >
+            {resp &&
+              resp.map((possibility, idx) => (
+                <div key={idx} className={`flex-col flex gap-3`}>
+                  <p
+                    key={possibility}
+                    className="text-stone-300 size-fit text-2xl tracking-widest bg-stone-700 px-2 py-1 whitespace-nowrap"
+                  >
                     {possibility.split("").join(" ")}
                   </p>
-                ))}
-              </div>
-            ))}
+                </div>
+              ))}
+          </div>
+          {possibleWords.size > 0 && (
+            <div className="m-auto w-full">
+              <Collapsible title={`possible words (${possibleWords.size})`}>
+                <ul
+                  className={`list-disc list-inside ml-3 text-lg ${smartColumnsClassName}`}
+                >
+                  {Array.from(possibleWords).map((w) => (
+                    <li key={w}>{w}</li>
+                  ))}
+                </ul>
+              </Collapsible>
+            </div>
+          )}
         </div>
       </div>
       <Footer />
