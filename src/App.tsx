@@ -13,8 +13,8 @@ import { toggleLetterState } from "./toggleLetterState";
 import { chunk } from "lodash";
 import { getValidPermutations } from "./getValidPermutations";
 import { Footer } from "./Footer";
-import { getPossibleWords } from "./worker/util";
 import { Collapsible } from "./Collapsible";
+import { useWorker } from "./worker/useWorker";
 
 const MAX_ROWS = 5;
 
@@ -30,17 +30,17 @@ const App = () => {
   const [resp, setResp] = useState<string[]>([]);
   const [possibleWords, setPossibleWords] = useState<Set<string>>(new Set());
   const [rows, setRows] = useImmer<Letter[][]>(INITIAL_ROW_STATE);
+  const { loading, words, run } = useWorker();
   const letterRefs = useRef<HTMLDivElement[][]>([[], [], [], [], [], []]);
+
+  useEffect(() => {
+    setPossibleWords(new Set(words));
+  }, [words]);
 
   const onComplete = () => {
     const permutations = getValidPermutations(rows).sort();
     setResp(permutations);
-    if (permutations.length > 0) {
-      const words = permutations.flatMap((p) => getPossibleWords(p, 5));
-      words.sort((a, b) => a.localeCompare(b));
-
-      setPossibleWords(new Set(words));
-    }
+    run(permutations);
   };
 
   function setLetter(rowIndex: number, letterIndex: number, l: Letter) {
@@ -209,10 +209,11 @@ const App = () => {
           ))}
           <div className="flex items-center justify-center gap-2 mt-2">
             <button
-              className="bg-green-700 px-4 py-2 text-stone-300 text-lg"
+              className="bg-green-700 px-4 py-2 text-stone-300 text-lg disabled:opacity-50"
               onClick={onComplete}
+              disabled={loading}
             >
-              ✨ visualize success
+              {loading ? "⏳ working..." : "✨ visualize success"}
             </button>
             <button
               className="min-w-28 bg-red-700 px-4 py-2 text-stone-300 text-lg"
