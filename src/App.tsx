@@ -10,7 +10,6 @@ import { LetterState } from "./enum";
 import { LetterSlot } from "./LetterSlot";
 import { Tips } from "./Tips";
 import { toggleLetterState } from "./toggleLetterState";
-import { chunk } from "lodash";
 import { getValidPermutations } from "./getValidPermutations";
 import { Footer } from "./Footer";
 import { Collapsible } from "./Collapsible";
@@ -40,7 +39,7 @@ const App = () => {
   const onComplete = () => {
     const permutations = getValidPermutations(rows).sort();
     setResp(permutations);
-    run(permutations);
+    run(permutations, 10);
   };
 
   function setLetter(rowIndex: number, letterIndex: number, l: Letter) {

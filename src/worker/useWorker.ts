@@ -22,13 +22,13 @@ export function useWorker() {
     return () => worker.terminate();
   }, []);
 
-  function run(permutations: string[]) {
+  function run(permutations: string[], maxMatches?: number) {
     if (permutations.length === 0) {
       setWords([]);
       return;
     }
     setLoading(true);
-    workerRef.current?.postMessage({ permutations });
+    workerRef.current?.postMessage({ permutations, maxMatches });
   }
 
   return { loading, words, run };
