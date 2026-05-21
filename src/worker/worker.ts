@@ -1,10 +1,9 @@
-import { getPossibleWords } from "./util";
+import { findWords, type RowLetter } from "./util";
 
 self.onmessage = (
-  e: MessageEvent<{ permutations: string[]; maxMatches?: number }>,
+  e: MessageEvent<{ rows: RowLetter[][]; maxMatches?: number }>,
 ) => {
-  const { permutations, maxMatches = 5 } = e.data;
-  const words = permutations.flatMap((p) => getPossibleWords(p, maxMatches));
-  words.sort((a, b) => a.localeCompare(b));
+  const { rows, maxMatches = 5 } = e.data;
+  const words = findWords(rows, maxMatches);
   self.postMessage({ words });
 };

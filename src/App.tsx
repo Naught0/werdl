@@ -39,7 +39,7 @@ const App = () => {
   const onComplete = () => {
     const permutations = getValidPermutations(rows).sort();
     setResp(permutations);
-    run(permutations, 10);
+    run(rows);
   };
 
   function setLetter(rowIndex: number, letterIndex: number, l: Letter) {
