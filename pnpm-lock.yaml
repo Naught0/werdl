@@ -8,27 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@testing-library/jest-dom':
-        specifier: ^5.14.1
-        version: 5.17.0
-      '@testing-library/react':
-        specifier: ^13.0.0
-        version: 13.4.0(@types/react@18.3.29)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@testing-library/user-event':
-        specifier: ^13.2.1
-        version: 13.5.0(@testing-library/dom@8.20.1)
-      '@types/jest':
-        specifier: ^27.0.1
-        version: 27.5.2
-      '@types/node':
-        specifier: ^16.7.13
-        version: 16.18.126
-      '@types/react':
-        specifier: ^18.0.0
-        version: 18.3.29
-      '@types/react-dom':
-        specifier: ^18.0.0
-        version: 18.3.7(@types/react@18.3.29)
       immer:
         specifier: ^10.0.1
         version: 10.2.0
@@ -51,9 +30,30 @@ importers:
         specifier: ^2.1.0
         version: 2.1.4
     devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^5.14.1
+        version: 5.17.0
+      '@testing-library/react':
+        specifier: ^13.0.0
+        version: 13.4.0(@types/react@18.3.29)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@testing-library/user-event':
+        specifier: ^13.2.1
+        version: 13.5.0(@testing-library/dom@8.20.1)
+      '@types/jest':
+        specifier: ^27.0.1
+        version: 27.5.2
       '@types/lodash':
         specifier: ^4.14.194
         version: 4.17.24
+      '@types/node':
+        specifier: ^16.7.13
+        version: 16.18.126
+      '@types/react':
+        specifier: ^18.0.0
+        version: 18.3.29
+      '@types/react-dom':
+        specifier: ^18.0.0
+        version: 18.3.7(@types/react@18.3.29)
       '@vitejs/plugin-react':
         specifier: ^6.0.2
         version: 6.0.2(vite@8.0.13(@types/node@16.18.126)(jiti@1.21.7)(sass@1.99.0))
