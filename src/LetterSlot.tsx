@@ -50,6 +50,10 @@ export const LetterSlot = forwardRef<HTMLDivElement, LetterSlotProps>(
             });
           }}
           ref={ref}
+          autoCorrect="off"
+          autoCapitalize="off"
+          aria-autocomplete="none"
+          inputMode="text"
           contentEditable
         >
           {letter.letter}
@@ -57,5 +61,5 @@ export const LetterSlot = forwardRef<HTMLDivElement, LetterSlotProps>(
         <StateBtn onClick={toggle} state={letter.state} />
       </div>
     );
-  }
+  },
 );
