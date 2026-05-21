@@ -64,7 +64,7 @@ importers:
         specifier: ^8.5.15
         version: 8.5.15
       sass:
-        specifier: ^1.62.1
+        specifier: ^1.99.0
         version: 1.99.0
       tailwindcss:
         specifier: ^3.3.2
