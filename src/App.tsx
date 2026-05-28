@@ -31,6 +31,7 @@ const App = () => {
   const [rows, setRows] = useImmer<Letter[][]>(INITIAL_ROW_STATE);
   const { loading, words, run } = useWorker();
   const letterRefs = useRef<HTMLDivElement[][]>([[], [], [], [], [], []]);
+  const nextFocusRef = useRef<{ row: number; col: number } | null>(null);
 
   useEffect(() => {
     setPossibleWords(new Set(words));
@@ -133,13 +134,31 @@ const App = () => {
   function addRow() {
     if (rows.length === MAX_ROWS) return;
 
+    const prevRow = rows[rows.length - 1];
+
+    const firstEmptyIndex = prevRow.findIndex(
+      (l) => l.state !== LetterState.CORRECT || !l.letter,
+    );
+    nextFocusRef.current = {
+      row: rows.length,
+      col: firstEmptyIndex >= 0 ? firstEmptyIndex : 0,
+    };
+
     setRows((draft) => {
-      draft.push(
-        [...Array(5).keys()].map(() => ({
+      const newRow = [...Array(5).keys()].map((i) => {
+        const prevLetter = prevRow[i];
+        if (prevLetter.state === LetterState.CORRECT && prevLetter.letter) {
+          return {
+            state: LetterState.CORRECT,
+            letter: prevLetter.letter,
+          };
+        }
+        return {
           state: LetterState.IN_WORD,
           letter: "",
-        })),
-      );
+        };
+      });
+      draft.push(newRow);
     });
   }
 
@@ -156,8 +175,14 @@ const App = () => {
     letterRefs.current[0][0].focus();
   }, []);
   useEffect(
-    function focusFirstLetterSlot() {
-      letterRefs.current[rows.length - 1][0].focus();
+    function focusAfterRowChange() {
+      const target = nextFocusRef.current;
+      if (target) {
+        nextFocusRef.current = null;
+        letterRefs.current[target.row]?.[target.col]?.focus();
+      } else {
+        letterRefs.current[rows.length - 1]?.[0]?.focus();
+      }
     },
     [rows.length],
   );
