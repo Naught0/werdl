@@ -113,6 +113,12 @@ const App = () => {
       }
     }
 
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      onComplete();
+      return true;
+    }
+
     if (e.key === "Enter" && !e.ctrlKey) {
       e.preventDefault();
       addRow();
@@ -213,7 +219,7 @@ const App = () => {
               <div className="flex flex-row sm:flex-col gap-2 justify-center items-center w-full sm:w-fit">
                 {(rowIndex !== 0 || rows.length > 1) && (
                   <button
-                    className="cursor-pointer text-stone-300 w-8 h-8 bg-stone-700 select-none"
+                    className="cursor-pointer text-stone-300 w-8 h-8 bg-stone-700 select-none rounded-sm"
                     onClick={() => removeRow(rowIndex)}
                   >
                     -
@@ -221,7 +227,7 @@ const App = () => {
                 )}
                 {rowIndex === rows.length - 1 && rowIndex < MAX_ROWS - 1 && (
                   <button
-                    className="cursor-pointer text-stone-300 w-8 h-8 bg-stone-700 select-none"
+                    className="cursor-pointer text-stone-300 w-8 h-8 bg-stone-700 select-none rounded-sm"
                     onClick={() => addRow()}
                   >
                     +
@@ -233,14 +239,14 @@ const App = () => {
           ))}
           <div className="flex items-center justify-center gap-2 mt-2">
             <button
-              className="bg-green-700 px-4 py-2 text-stone-300 text-lg disabled:opacity-50"
+              className="bg-green-700 px-4 py-2 text-stone-300 text-lg disabled:opacity-50 rounded-sm"
               onClick={onComplete}
               disabled={loading}
             >
               {loading ? "⏳ working..." : "✨ visualize success"}
             </button>
             <button
-              className="min-w-28 bg-red-700 px-4 py-2 text-stone-300 text-lg"
+              className="min-w-28 bg-red-700 px-4 py-2 text-stone-300 text-lg rounded-sm"
               onClick={clear}
             >
               💣 clear
@@ -261,7 +267,7 @@ const App = () => {
                 <div key={idx} className={`flex-col flex gap-3`}>
                   <p
                     key={possibility}
-                    className="text-stone-300 size-fit text-2xl tracking-widest bg-stone-700 px-2 py-1 whitespace-nowrap"
+                    className="text-stone-300 size-fit text-2xl tracking-widest bg-stone-700 px-2 py-1 whitespace-nowrap rounded-sm"
                   >
                     {possibility.split("").join(" ")}
                   </p>
