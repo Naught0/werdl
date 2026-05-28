@@ -17,11 +17,11 @@ export const StateBtn: FC<StateBtnProps> = ({ state, onClick }) => {
           return "❌";
       }
     },
-    [state]
+    [state],
   );
   return (
     <button
-      className="w-100 bg-stone-700 select-none"
+      className="w-100 bg-stone-700 select-none rounded-sm"
       tabIndex={-1}
       onClick={onClick}
     >
