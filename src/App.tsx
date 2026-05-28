@@ -48,7 +48,14 @@ const App = () => {
       draft[rowIndex][letterIndex] = l;
     });
 
-    letterRefs.current[rowIndex][letterIndex + 1]?.focus();
+    const row = rows[rowIndex];
+    let nextIndex = letterIndex + 1;
+    while (nextIndex < 5 && row[nextIndex].state === LetterState.CORRECT) {
+      nextIndex++;
+    }
+    if (nextIndex < 5) {
+      letterRefs.current[rowIndex][nextIndex]?.focus();
+    }
   }
   function removeRow(rowIdx: number) {
     setRows((draft) => {
